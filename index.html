@@ -14,7 +14,7 @@
 <title>Calle 13 · Menú digital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: signage-style menu board — red masthead, sticky search + section tabs, dense rows with prices aligned right, bottom order bar */
 :root{
@@ -189,6 +189,67 @@ legend em{font-style:normal;color:var(--muted);letter-spacing:.04em;text-transfo
 .demo-box b{color:var(--red)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-weight:600;font-size:14px;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}
 </style>
+<style>
+/* Calle 13: cartel callejero — etiquetas rojas inclinadas, tarjetas, precios en dorado */
+:root{
+  --f-display:"Anton", Impact, "Arial Narrow", sans-serif;
+  --f-body:"Poppins", "Helvetica Neue", Arial, sans-serif;
+  --f-num:"Oswald", "Arial Narrow", sans-serif;
+  --bg:#F3EEE6; --surface:#FFFFFF; --card:#FFFFFF; --ink:#18110F; --muted:#6B5F59; --line:#E2D9CC;
+  --gold:#F2B417; --gold-ink:#1A1206; --gold-txt:#8A5E00;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E0A0A; --surface:#191313; --card:#1C1515; --ink:#F6F0EB; --muted:#B4A7A1; --line:#302524; --gold-txt:#F2B417}}
+:root[data-theme="dark"]{--bg:#0E0A0A; --surface:#191313; --card:#1C1515; --ink:#F6F0EB; --muted:#B4A7A1; --line:#302524; --gold-txt:#F2B417}
+body{font-size:15px}
+.demo-strip{background:var(--gold);color:var(--gold-ink)}
+.mast{position:relative;background:#120C0C;border-bottom:0;padding-bottom:10px}
+.mast::after{content:"";position:absolute;left:0;right:0;bottom:0;height:10px;
+  background:linear-gradient(135deg,var(--gold) 33%,transparent 33%) 0 0/14px 10px,linear-gradient(225deg,var(--gold) 33%,transparent 33%) 0 0/14px 10px;background-color:#120C0C}
+.mast .wrap{padding-block:26px 24px}
+.mast .tag{justify-self:start;background:#C8102E;color:#fff;padding:5px 12px;transform:skew(-8deg);letter-spacing:.1em;font-size:14px;opacity:1}
+.mast h1{font-weight:400;font-size:clamp(64px,19vw,112px);line-height:.9;letter-spacing:.01em}
+.wa{background:#2A1F1F}
+.bar{background:var(--bg);border-bottom:0}
+.search{border-radius:999px;height:46px;border-width:2px}
+.tabs{gap:8px;margin-top:10px;padding-bottom:12px}
+.tab{border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-size:16px;font-weight:600;letter-spacing:.06em;color:var(--ink)}
+.tab[aria-current="true"]{background:var(--red);border-color:var(--red);color:#fff}
+.sec{padding-top:34px}
+.sec-h{border-bottom:0;margin-bottom:4px;align-items:center}
+.sec-h h2{display:inline-block;font-weight:400;font-size:clamp(30px,8.5vw,42px);line-height:1;background:var(--red);color:#fff;padding:8px 16px 6px;transform:skew(-7deg);margin-left:4px;letter-spacing:.02em}
+.sec-h p{color:var(--gold-txt);font-weight:600;letter-spacing:.1em}
+.tax{background:none;color:inherit;padding:0}
+.grp{padding-top:16px}
+.grp h3{color:var(--gold-txt);font-size:16px;letter-spacing:.16em;margin-bottom:4px}
+.gnote{font-size:13.5px}
+.items{display:grid;gap:10px;margin-top:8px}
+.it{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 14px 14px 16px;border-left:5px solid var(--red)}
+.it:last-child{border-bottom:1px solid var(--line)}
+.it h4{font-family:var(--f-display);font-weight:400;font-size:21px;line-height:1.05;text-transform:uppercase;letter-spacing:.02em}
+.it-d{font-size:14px;margin-top:5px}
+.vars{font-size:15px}
+.price{display:inline-block;background:var(--gold);color:var(--gold-ink);border-radius:8px;padding:2px 9px;font-size:19px;font-weight:600}
+.price small{color:var(--gold-ink);opacity:.75}
+.badge{background:var(--gold);color:var(--gold-ink);transform:skew(-8deg)}
+.add{border:0;background:var(--red);color:#fff;border-radius:12px;width:40px;height:40px}
+.add:hover{background:var(--red-deep)}
+.add .n{background:var(--gold);color:var(--gold-ink)}
+.step{border-radius:12px;height:40px}
+.items.compact{display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:2px 14px;border-left:5px solid var(--gold)}
+.items.compact .it{background:none;border:0;border-radius:0;border-bottom:1px dashed var(--line);padding:10px 0}
+.items.compact .it:last-child{border-bottom:0}
+.items.compact .it h4{font-family:var(--f-body);text-transform:none;font-size:15.5px;font-weight:600;letter-spacing:0}
+.items.compact .price{font-size:17px}
+.obar button{border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.obar .cnt{background:var(--gold);color:var(--gold-ink)}
+.sh-top h2{font-weight:400;font-size:32px}
+.sheet{border-radius:22px 22px 0 0;border-top:5px solid var(--red)}
+.big{border-radius:14px}
+legend{color:var(--gold-txt)}
+footer{border-top:0}
+.wa b{white-space:nowrap;font-size:19px}.wa{font-size:14px}
+</style>
 </head>
 <body>
 
@@ -198,7 +259,7 @@ legend em{font-style:normal;color:var(--muted);letter-spacing:.04em;text-transfo
 
 <header class="mast">
   <div class="wrap">
-    <p class="tag">Hamburguesas smash · Papas arregladas · Birria</p>
+    <p class="tag">Smash burgers · Papas · Birria</p>
     <h1>Calle <em>13</em></h1>
     <div class="row">
       <span class="st" id="st" role="status">Abierto</span>
