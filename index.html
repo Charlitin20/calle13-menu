@@ -391,8 +391,15 @@ const PLUS = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke
 
 // ---------- cart ----------
 let cart = [];
-try{ cart = JSON.parse(localStorage.getItem("calle13-cart")||"[]")||[]; }catch(e){ cart=[]; }
-const save=()=>{ try{ localStorage.setItem("calle13-cart",JSON.stringify(cart)); }catch(e){} };
+const TTL = 60*60*1000;   // el pedido se borra solo tras 1 hora sin usarlo o al volver después de enviarlo
+let stale = false;
+try{
+  const raw = JSON.parse(localStorage.getItem("calle13-cart")||"null");
+  stale = !raw || Array.isArray(raw) || raw.sent || (Date.now()-(raw.t||0))>TTL;
+  cart = stale ? [] : (raw.items||[]);
+}catch(e){ cart=[]; stale=true; }
+const save=()=>{ try{ localStorage.setItem("calle13-cart",JSON.stringify({t:Date.now(),items:cart})); }catch(e){} };
+const markSent=()=>{ try{ localStorage.setItem("calle13-cart",JSON.stringify({t:Date.now(),items:cart,sent:1})); }catch(e){} };
 const qtyOf = id=>cart.filter(l=>l.id===id).reduce((a,l)=>a+l.qty,0);
 function promoToday(it){ return !!it && it.twoForOne!==undefined && crNow().day===it.twoForOne; }
 function totals(){
@@ -528,6 +535,7 @@ function commitItem(){
 let form={name:"",mode:"Recoger en el local",addr:"",loc:"",pay:"Efectivo",notes:""};
 let locState="";
 try{ Object.assign(form, JSON.parse(localStorage.getItem("calle13-form")||"{}")); }catch(e){}
+if(stale){ form.notes=""; form.loc=""; form.mode="Recoger en el local"; form.pay="Efectivo"; }
 function saveForm(){ try{ localStorage.setItem("calle13-form",JSON.stringify(form)); }catch(e){} }
 function message(){
   const t=totals();
@@ -637,6 +645,7 @@ document.addEventListener("click",e=>{
   if(t.id==="copyMsg"){ const m=message(); copyText(m,"Pedido copiado").then(ok=>{ if(!ok){ const el=$("#msg"); el.textContent=m; el.hidden=false; } }); return; }
   if(d.note!==undefined){ const i=Number(d.note); if(editNote===i){ closeNote(); return; } editNote=i; renderCart(); const inp=document.getElementById("ln-"+i); if(inp){ inp.focus(); const n=inp.value.length; try{ inp.setSelectionRange(n,n); }catch(err){} } return; }
   if(t.id==="send" && !valid()){ e.preventDefault(); showErrors(); return; }
+  if(t.id==="send"){ markSent(); return; }
   if(t.id==="send" && !valid()){ e.preventDefault(); const er=$("#err"); er.textContent = !form.name.trim()?"Escribí tu nombre para enviar el pedido.":"Escribí la dirección para el express."; er.hidden=false; return; }
 });
 $("#ov").addEventListener("click",e=>{ if(e.target.id==="ov") closeSheet(); });
