@@ -535,7 +535,7 @@ function commitItem(){
 let form={name:"",mode:"Recoger en el local",addr:"",loc:"",pay:"Efectivo",notes:""};
 let locState="";
 try{ Object.assign(form, JSON.parse(localStorage.getItem("calle13-form")||"{}")); }catch(e){}
-if(stale){ form.notes=""; form.loc=""; form.mode="Recoger en el local"; form.pay="Efectivo"; }
+if(stale){ form.notes=""; form.loc=""; form.addr=""; form.mode="Recoger en el local"; form.pay="Efectivo"; }
 function saveForm(){ try{ localStorage.setItem("calle13-form",JSON.stringify(form)); }catch(e){} }
 function message(){
   const t=totals();
